@@ -1,3 +1,6 @@
+var yaml = require('yamljs');
+var fs = require('fs');
+
 // database is let instead of const to allow us to modify it in test.js
 let database = {
   users: {},
@@ -43,6 +46,15 @@ const routes = {
     'PUT': downvoteComment
   }
 };
+
+function loadDatabase(){
+  return yaml.load('db.yml');
+}
+
+function saveDatabase(){
+  var yamlDb = yaml.stringify(database);
+  fs.writeFileSync('./db.yml', yamlDb);
+}
 
 function createComment(url, request){
   const requestComment = request.body && request.body.comment;
